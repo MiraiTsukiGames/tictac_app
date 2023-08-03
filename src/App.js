@@ -27,7 +27,7 @@ function Square({ value, onSquareClick }) {
   const winner = calculateWinner(squares);
   let status;
   if (winner) {
-    status = "Winner: " + winner;
+    status = <span className="winner">Winner: {winner}</span>;
   } else {
     status = "Next player: " + (xIsNext ? "X" : "O");
   }
@@ -72,6 +72,11 @@ export default function Game() {
     setCurrentMove(nextMove);
   }
 
+  function handleGoToStart() {
+    setCurrentMove(0);
+    setHistory([Array(9).fill(null)]);
+  }
+
   const moves = history.map((squares, move) => {
     let description;
     if (move > 0) {
@@ -87,13 +92,21 @@ export default function Game() {
   });
 
   return (
+    <div className='Title' >
+    <h1>Tic Tac Toe!</h1>
     <div className="game">
       <div className="game-board">
         <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
       </div>
       <div className="game-info">
-        <ol>{moves}</ol>
+       <ol>
+       <li>
+      <button onClick={handleGoToStart}>Go to game start</button>
+    </li>
+       {moves.slice(1)}
+       </ol>
       </div>
+    </div>
     </div>
   );
 }
